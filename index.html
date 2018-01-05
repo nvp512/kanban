@@ -18,8 +18,11 @@
           <div class="panel panel-{{list.class}}">
             <div class="panel-heading list-header" ng-bind="list.label"></div>
             <div class="panel-body task-list">
-              <ul>
-                <li ng-repeat="task in list.tasks">
+              <ul dnd-list dnd-drop="ctrl.onDrop(list, item, index)">
+                <li ng-repeat="task in list.tasks" dnd-draggable="ctrl.getSelectedTasksIncluding(list, task)"
+                  dnd-dragstart="ctrl.onDragstart(list, event)" dnd-moved="ctrl.onMoved(list)"
+                  dnd-dragend="list.dragging = false" dnd-selected="task.selected = !task.selected"
+                  ng-class="{'selected': task.selected}" ng-hide="list.dragging && task.selected">
                     <i class="fa" aria-hidden="true"
                       ng-class="{'fa-hand-o-right': list.label === 'TO DO', 'fa-cogs': list.label === 'DOING',
                         'fa-exclamation-circle': list.label === 'PENDING', 'fa-check-square-o': list.label === 'DONE'}">
@@ -32,17 +35,5 @@
         </div>
       </div>
     </div>
-        <ul dnd-list dnd-drop="ctrl.onDrop(list, item, index)">
-        <li ng-repeat="task in list.tasks" dnd-draggable="ctrl.getSelectedTasksIncluding(list, task)"
-          dnd-dragstart="ctrl.onDragstart(list, event)" dnd-moved="ctrl.onMoved(list)"
-          dnd-dragend="list.dragging = false" dnd-selected="task.selected = !task.selected"
-          ng-class="{'selected': task.selected}" ng-hide="list.dragging && task.selected">
-            <i class="fa" aria-hidden="true"
-              ng-class="{'fa-hand-o-right': list.label === 'TO DO', 'fa-cogs': list.label === 'DOING',
-                'fa-exclamation-circle': list.label === 'PENDING', 'fa-check-square-o': list.label === 'DONE'}">
-            </i>
-            <span ng-bind="task.name"></span>
-        </li>
-    </ul>
   </body>
 </html>
