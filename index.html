@@ -1,0 +1,48 @@
+<html>
+  <head>
+    <meta charset="utf-8"/>
+    <script src="../kanban/node_modules/angular/angular.js"></script>
+    <script src="../kanban/node_modules/angular-animate/angular-animate.js"></script>
+    <script src="../kanban/node_modules/angular-sanitize/angular-sanitize.js"></script>
+    <script src="../kanban/node_modules/angular-drag-and-drop-lists/angular-drag-and-drop-lists.js"></script>
+    <script src="../kanban/node_modules/lodash/lodash.js"></script>
+    <script src="../kanban/src/app.js"></script>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  </head>
+  <body ng-app="myApp" ng-controller="kanBanCtrl as ctrl">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-3" ng-repeat="list in ctrl.taskList">
+          <div class="panel panel-{{list.class}}">
+            <div class="panel-heading list-header" ng-bind="list.label"></div>
+            <div class="panel-body task-list">
+              <ul>
+                <li ng-repeat="task in list.tasks">
+                    <i class="fa" aria-hidden="true"
+                      ng-class="{'fa-hand-o-right': list.label === 'TO DO', 'fa-cogs': list.label === 'DOING',
+                        'fa-exclamation-circle': list.label === 'PENDING', 'fa-check-square-o': list.label === 'DONE'}">
+                    </i>
+                    <span ng-bind="task.name"></span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+        <ul dnd-list dnd-drop="ctrl.onDrop(list, item, index)">
+        <li ng-repeat="task in list.tasks" dnd-draggable="ctrl.getSelectedTasksIncluding(list, task)"
+          dnd-dragstart="ctrl.onDragstart(list, event)" dnd-moved="ctrl.onMoved(list)"
+          dnd-dragend="list.dragging = false" dnd-selected="task.selected = !task.selected"
+          ng-class="{'selected': task.selected}" ng-hide="list.dragging && task.selected">
+            <i class="fa" aria-hidden="true"
+              ng-class="{'fa-hand-o-right': list.label === 'TO DO', 'fa-cogs': list.label === 'DOING',
+                'fa-exclamation-circle': list.label === 'PENDING', 'fa-check-square-o': list.label === 'DONE'}">
+            </i>
+            <span ng-bind="task.name"></span>
+        </li>
+    </ul>
+  </body>
+</html>
